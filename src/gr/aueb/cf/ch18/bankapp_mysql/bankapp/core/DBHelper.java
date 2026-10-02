@@ -1,0 +1,34 @@
+package gr.aueb.cf.ch18.bankapp_mysql.bankapp.core;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class DBHelper {
+    private static final HikariDataSource datasource;
+
+    static {
+        HikariConfig config = new HikariConfig();
+
+        // Config DB
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/bankdbdev" +
+                "?sslMode=preferred&serverTimeZone=UTC&allowPublicKeyRetrieval=true");
+        config.setUsername("bank_user");
+        config.setPassword(System.getenv().getOrDefault("MYSQL_PASSWORD", ""));
+
+        datasource = new HikariDataSource(config);
+    }
+
+    private DBHelper() {}
+
+    public static Connection getConnection() throws SQLException {
+        return datasource.getConnection();
+    }
+}
+
+//        config.setJdbcUrl("jdbc:mysql://localhost:3307/bankdb" +
+//                "?sslMode=preferred&serverTimeZone=UTC&allowPublicKeyRetrieval=true");
+//        config.setUsername("bankuser");              // MYSQL_USER
+//            config.setPassword(System.getenv().getOrDefault("MYSQL_PASSWORD", ""));         // MYSQL_PASSWORD
